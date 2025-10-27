@@ -1,6 +1,6 @@
-# Events Site (Next.js App Router, TypeScript)
+# PUPS Site (Next.js App Router, TypeScript)
 
-A scaffolded frontend for the Events Site based on the provided flowchart.  
+A scaffolded frontend for the PUPS Site based on the provided flowchart.  
 Built with Next.js App Router and TypeScript, this project provides simple, local-data-driven pages for events, colloquium entries, and the team.
 
 ## Routes
