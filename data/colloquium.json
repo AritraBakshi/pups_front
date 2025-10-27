@@ -1,0 +1,42 @@
+[
+  {
+    "id": 101,
+    "name": "Deep Learning Colloquium — Advances in Vision",
+    "speaker": "Dr. Ananya Sen",
+    "abstract": "Overview of recent advances in computer vision and deep learning, including transformer-based architectures and their applications in medical imaging and autonomous systems.",
+    "video": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "materials": ["https://drive.google.com/sample-presentation"],
+    "date": "2025-10-05 16:00",
+    "location": "Lecture Hall B"
+  },
+  {
+    "id": 102,
+    "name": "Quantum Entanglement and Information Theory",
+    "speaker": "Prof. Rajesh Mukherjee",
+    "abstract": "A deep dive into the role of entanglement in quantum communication and its implications for quantum computing.",
+    "video": "",
+    "materials": [],
+    "date": "2025-10-12 16:00",
+    "location": "Lecture Hall A"
+  },
+  {
+    "id": 103,
+    "name": "Astrophysics Frontiers — Dark Matter Mapping",
+    "speaker": "Dr. Leena Das",
+    "abstract": "Exploring the latest techniques in gravitational lensing and cosmic microwave background analysis to understand dark matter distribution.",
+    "video": "https://www.youtube.com/embed/sample-darkmatter",
+    "materials": ["https://drive.google.com/darkmatter-slides"],
+    "date": "2025-10-19 16:00",
+    "location": "Auditorium"
+  },
+  {
+    "id": 104,
+    "name": "Panel Discussion — Physics Education in India",
+    "speaker": "Multiple Panelists",
+    "abstract": "A roundtable discussion on curriculum reform, research opportunities, and student engagement in physics education across Indian universities.",
+    "video": "",
+    "materials": ["https://drive.google.com/education-panel-summary"],
+    "date": "2025-10-26 16:00",
+    "location": "Seminar Room 2"
+  }
+]
