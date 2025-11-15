@@ -22,3 +22,6 @@ Required:
 - arka.jpg
 - aritra.jpg
 - default-profile.jpg (fallback for missing member photos)
+
+Added:
+- logo.png  (site logo — MIGHT NEED A CIRCLE PHOTO LATER)
