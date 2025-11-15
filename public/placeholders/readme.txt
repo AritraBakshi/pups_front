@@ -24,4 +24,4 @@ Required:
 - default-profile.jpg (fallback for missing member photos)
 
 Added:
-- logo.png  (site logo — MIGHT NEED A CIRCLE PHOTO LATER)
+- logo.png  (site logo — MIGHT NEED A CIRCLE PHOTO LATER) ## If a new logo is added, png size could be increased.
