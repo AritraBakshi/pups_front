@@ -1,45 +1,112 @@
 :root{
-  --bg:#f8fafc;
-  --muted:#6b7280;
-  --accent:#1f2937;
-  --card:#ffffff;
+  /* Palette derived from the provided logo */
+  --primary: #6B0F0F;        /* main maroon */
+  --primary-dark: #4F0A0A;   /* darker maroon for accents */
+  --accent: #FFFFFF;         /* white accents / text on maroon */
+  --bg: #FFF5F5;             /* very light maroon tint for page background */
+  --muted: #7A2B2B;          /* muted maroon for less-prominent text */
+  --card: #ffffff;           /* card background for contrast */
 }
 
-html,body,#root {
-  height:100%;
+
+/* Smooth color transitions when toggling theme */
+html, body {
+  transition: background-color 240ms ease, color 240ms ease;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-  margin:0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background:var(--bg);
-  color:var(--accent);
+/* Logo styling */
+.logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  padding: 6px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
+.logo-img {
+  display: block;
+  height: 34px;
+  width: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Theme toggle styles */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--accent);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 120ms ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-toggle .theme-toggle-icon {
+  /* slightly larger icon */
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* ensure button is readable on light mode */
+/*body:not(.dark) .theme-toggle {*/
+/*  color: var(--primary-dark);*/
+/*  border-color: rgba(0,0,0,0.06);*/
+/*  background: rgba(255,255,255,0.85);*/
+/*}*/
+
+/* Container width */
 .container{
   max-width:1100px;
   margin:0 auto;
   padding:24px;
 }
 
+/* Header */
 .header{
-  background:var(--card);
-  border-bottom:1px solid #e6e9ee;
+  background:var(--primary);
+  border-bottom:1px solid rgba(0,0,0,0.08);
   padding:12px 24px;
+  color:var(--accent);
 }
 
+/* Navigation */
 .nav{
   display:flex;
   gap:12px;
   align-items:center;
 }
 
+/* Grid for cards */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:16px;
 }
 
+/* Card */
 .card{
   background:var(--card);
   padding:16px;
@@ -47,22 +114,26 @@ body{
   box-shadow:0 1px 2px rgba(0,0,0,0.04);
 }
 
+/* Muted small text */
 .small-muted{
   color:var(--muted);
   font-size:0.9rem;
 }
 
+/* Dark mode overrides */
 body.dark {
   --bg: #121212;
   --card: #1e1e1e;
-  --accent: #f0f0f0;
+  --primary: #6B0F0F;
+  --primary-dark: #f0dede;
+  --accent: #fff;
   --muted: #a1a1aa;
   background: var(--bg);
-  color: var(--accent);
+  color: var(--primary-dark);
 }
 
 body.dark a {
-  color: #90caf9;
+  color: #f4bcbc;
 }
 
 body.dark .card {
@@ -72,6 +143,29 @@ body.dark .card {
 }
 
 body.dark .header {
-  background: var(--card);
+  background: var(--primary);
   border-bottom: 1px solid #333;
+}
+
+/* Ensure the new toggle looks OK on smaller screens */
+@media (max-width: 640px) {
+  .theme-toggle {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+.event-card {
+  background: var(--card);
+  color: inherit;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 12px;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+/* Dark mode */
+body.dark .event-card {
+  background: var(--card);
+  border-color: rgba(255,255,255,0.2);
 }

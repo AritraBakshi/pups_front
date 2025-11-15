@@ -57,15 +57,11 @@ export default function Home() {
             <Link
               key={ev.id}
               href={`/events/${ev.id}`}
+              className="event-card"
               style={{
                 flex: '0 0 280px',
                 scrollSnapAlign: 'start',
                 textDecoration: 'none',
-                color: 'inherit',
-                border: '1px solid #ddd',
-                borderRadius: 8,
-                padding: 12,
-                background: '#fff'
               }}
             >
               <img
