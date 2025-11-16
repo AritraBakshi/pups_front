@@ -8,7 +8,7 @@ export const metadata = {
   title: 'Presidency University Physics Society',
   description: 'Welcome to the Official Website of PUPS! Follow us to know about upcoming events and colloquium'
 };
-
+//Random Comment 1
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
