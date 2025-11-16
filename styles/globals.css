@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root{
   /* Palette derived from the provided logo */
   --primary: #6B0F0F;        /* main maroon */
