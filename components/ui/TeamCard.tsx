@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import { TeamMember } from '../../types';
+import { Linkedin, Mail, User } from 'lucide-react';
 
 interface TeamCardProps {
   member: TeamMember;
@@ -8,20 +8,41 @@ interface TeamCardProps {
 
 export default function TeamCard({ member }: TeamCardProps) {
   return (
-    <Link
-      href={`/team/${member.id}`}
-      className="no-underline text-black dark:text-white bg-white dark:bg-[#25293c] rounded-lg p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-    >
-      <img
-        src={member.photo || '/placeholders/default-profile.jpg'}
-        alt={member.name}
-        className="w-full h-[140px] object-cover rounded-md"
-      />
-      <h3 className="mt-2 font-semibold text-lg">{member.name}</h3>
-      <div className="text-sm opacity-70 mt-1">{member.role}</div>
-      {member.tagline && (
-        <p className="mt-2 italic text-sm opacity-80">{member.tagline}</p>
-      )}
-    </Link>
+    <div className="border-2 bg-white dark:bg-[#25293c] rounded-lg p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col items-center text-center h-full">
+      {/* Profile Image Placeholder */}
+      <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mb-4 flex-shrink-0">
+        <User size={48} className="text-gray-400 dark:text-gray-500" />
+      </div>
+      
+      {/* Name */}
+      <h3 className="font-semibold text-xl mb-1">{member.name}</h3>
+      
+      {/* Role */}
+      <div className="text-sm opacity-70 mb-4">{member.role}</div>
+      
+      {/* Social Icons */}
+      <div className="flex gap-3 mt-auto pt-2">
+        {member.linkedin_url && (
+          <a
+            href={member.linkedin_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground opacity-60 hover:opacity-100 transition-opacity duration-200"
+            aria-label="LinkedIn"
+          >
+            <Linkedin size={24} />
+          </a>
+        )}
+        {member.email && (
+          <a
+            href={`mailto:${member.email}`}
+            className="text-muted-foreground opacity-60 hover:opacity-100 transition-opacity duration-200"
+            aria-label="Email"
+          >
+            <Mail size={24} />
+          </a>
+        )}
+      </div>
+    </div>
   );
 }

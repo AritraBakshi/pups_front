@@ -12,14 +12,10 @@ export interface Event {
 }
 
 export interface TeamMember {
-  id: number;
   name: string;
   role: string;
-  tagline?: string;
-  photo?: string;
-  bio?: string;
-  email?: string;
-  linkedin?: string;
+  linkedin_url: string;
+  email: string;
 }
 
 export interface Colloquium {

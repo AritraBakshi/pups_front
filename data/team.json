@@ -1,22 +1,14 @@
 [
   {
-    "id": 1,
     "name": "Arka Basak",
-    "role": "Website Developer & Backend Designer",
-    "tagline": "Architecting the invisible engine behind the platform.",
-    "photo": "/team/arka.jpg",
-    "bio": "Arka is the sole backend designer of the Physics Society web platform. He ensures that the data architecture, API design, and server-side logic are robust, scalable, and secure. His work powers the dynamic content and seamless performance of the site.",
-    "email": "arka.basak@example.com",
-    "linkedin": "https://linkedin.com/in/arka-basak"
+    "role": "Tech Team Member ",
+    "linkedin_url": "https://linkedin.com/in/url",
+    "email": "arka.basak@example.com"
   },
   {
-    "id": 2,
     "name": "Aritra Bakshi",
-    "role": "Website Developer & Frontend Designer",
-    "tagline": "Crafting intuitive interfaces for a seamless user experience.",
-    "photo": "/team/aritra.jpg",
-    "bio": "Aritra is the sole frontend designer of the Physics Society web platform. He focuses on building responsive layouts, clear navigation, and engaging user interactions using React and Next.js. His design choices shape how users experience the site.",
-    "email": "aritra.bakshi@example.com",
-    "linkedin": "https://linkedin.com/in/aritra-bakshi"
+    "role": "Tech Team Member ",
+    "linkedin_url": "https://linkedin.com/in/url",
+    "email": "aritra.bakshi@example.com"
   }
 ]
