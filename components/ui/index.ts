@@ -7,3 +7,4 @@ export { default as PageHeader } from './PageHeader';
 export { default as HeroSection } from './HeroSection';
 export { default as WhatWeDoSection } from './WhatWeDoSection';
 export { default as PhysicsBackground } from './PhysicsBackground';
+export { default as Separator } from './Separator';
