@@ -1,171 +1,92 @@
-:root{
-  /* Palette derived from the provided logo */
-  --primary: #6B0F0F;        /* main maroon */
-  --primary-dark: #4F0A0A;   /* darker maroon for accents */
-  --accent: #FFFFFF;         /* white accents / text on maroon */
-  --bg: #FFF5F5;             /* very light maroon tint for page background */
-  --muted: #7A2B2B;          /* muted maroon for less-prominent text */
-  --card: #ffffff;           /* card background for contrast */
-}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Smooth color transitions when toggling theme */
-html, body {
-  transition: background-color 240ms ease, color 240ms ease;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  :root {
+    /* Light theme colors - simple black and white */
+    --bg: #FFFFFF;
+    --card: #FFFFFF;
+    --text: #000000;
+    --muted: #666666;
+    --border: #E5E7EB;
+  }
 
-/* Logo styling */
-.logo-wrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent);
-  padding: 0.2px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-  flex-shrink: 0;
-  overflow: hidden;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-.logo-img {
-  display: block;
-  height: 65px;
-  width: auto;
-  object-fit: cover;
-  border-radius: 4px;
-}
+  html, body {
+    @apply m-0 p-0 transition-colors duration-300;
+    min-height: 100vh;
+  }
 
-/* Theme toggle styles */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.12);
-  color: var(--accent);
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 120ms ease;
-}
+  /* Light mode - black text on white background */
+  body {
+    background: var(--bg);
+    color: var(--text);
+  }
 
-.theme-toggle:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255,255,255,0.2);
-}
+  body * {
+    color: var(--text);
+  }
 
-.theme-toggle:active {
-  transform: translateY(0);
-}
+  /* Dark theme - white text on dark background */
+  .dark {
+    --bg: #1a1a2e;
+    --card: #25293c;
+    --text: #FFFFFF;
+    --muted: #9CA3AF;
+    --border: #374151;
+  }
 
-.theme-toggle .theme-toggle-icon {
-  /* slightly larger icon */
-  font-size: 1.15rem;
-  line-height: 1;
-}
+  .dark body {
+    background: var(--bg);
+    color: var(--text);
+  }
 
-/* ensure button is readable on light mode */
-/*body:not(.dark) .theme-toggle {*/
-/*  color: var(--primary-dark);*/
-/*  border-color: rgba(0,0,0,0.06);*/
-/*  background: rgba(255,255,255,0.85);*/
-/*}*/
+  .dark body * {
+    color: var(--text);
+  }
 
-/* Container width */
-.container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:24px;
-}
-
-/* Header */
-.header{
-  background:var(--primary);
-  border-bottom:1px solid rgba(0,0,0,0.08);
-  padding:0.1px 24px;
-  color:var(--accent);
-}
-
-/* Navigation */
-.nav{
-  display:flex;
-  gap:16px;
-  align-items:center;
-}
-
-/* Grid for cards */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:16px;
-}
-
-/* Card */
-.card{
-  background:var(--card);
-  padding:16px;
-  border-radius:8px;
-  box-shadow:0 1px 2px rgba(0,0,0,0.04);
-}
-
-/* Muted small text */
-.small-muted{
-  color:var(--muted);
-  font-size:0.9rem;
-}
-
-/* Dark mode overrides */
-body.dark {
-  --bg: #121212;
-  --card: #1e1e1e;
-  --primary: #6B0F0F;
-  --primary-dark: #f0dede;
-  --accent: #fff;
-  --muted: #a1a1aa;
-  background: var(--bg);
-  color: var(--primary-dark);
-}
-
-body.dark a {
-  color: #f4bcbc;
-}
-
-body.dark .card {
-  background: var(--card);
-  border-color: #333;
-  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.04);
-}
-
-body.dark .header {
-  background: var(--primary);
-  border-bottom: 1px solid #333;
-}
-
-/* Ensure the new toggle looks OK on smaller screens */
-@media (max-width: 640px) {
-  .theme-toggle {
-    padding: 6px 8px;
-    font-size: 0.85rem;
+  body a, .dark body a {
+    color: inherit;
   }
 }
 
-.event-card {
-  background: var(--card);
-  color: inherit;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 8px;
-  padding: 12px;
-  transition: background-color 200ms ease, border-color 200ms ease;
+@layer utilities {
+  .bg-card {
+    background-color: var(--card);
+  }
+
+  .text-muted {
+    color: var(--muted);
+  }
+
+  .border-custom {
+    border-color: var(--border);
+  }
 }
 
-/* Dark mode */
-body.dark .event-card {
-  background: var(--card);
-  border-color: rgba(255,255,255,0.2);
+/* Remove all animations keyframes and utilities section */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

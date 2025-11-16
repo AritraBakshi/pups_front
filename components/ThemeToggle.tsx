@@ -4,84 +4,64 @@ import React, { useEffect, useState } from 'react';
 
 /**
  * ThemeToggle
- * - toggles 'dark' class on document.body
- * - persists choice in localStorage under key 'pups-theme' ('dark' | 'light')
- * - respects prefers-color-scheme on first load if no saved preference
+ * - toggles 'dark' class on document.documentElement (html element)
+ * - persists choice in localStorage under key 'theme' ('dark' | 'light')
+ * - defaults to dark mode if no saved preference
  */
 export default function ThemeToggle() {
-  const STORAGE_KEY = 'pups-theme';
-  const [isDark, setIsDark] = useState<boolean | null>(null);
+  const [isDark, setIsDark] = useState(true); // Default to dark
 
-  // Determine initial theme on mount
   useEffect(() => {
-    const saved = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
-    if (saved === 'dark') {
-      setTheme(true);
-    } else if (saved === 'light') {
-      setTheme(false);
+    // Set dark mode as default on first load
+    const savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+      // If no saved preference, default to dark
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setIsDark(true);
     } else {
-      // no saved preference: respect system preference
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark);
-    }
-
-    // Listen for system preference changes only if user has not chosen a preference
-    const onPrefChange = (e: MediaQueryListEvent) => {
-      const savedNow = window.localStorage.getItem(STORAGE_KEY);
-      if (!savedNow) { // only change when no explicit user choice
-        setTheme(e.matches);
+      // Use saved preference
+      const isDarkMode = savedTheme === 'dark';
+      setIsDark(isDarkMode);
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
-    };
-
-    const mm = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-    if (mm && mm.addEventListener) {
-      mm.addEventListener('change', onPrefChange);
-      return () => mm.removeEventListener('change', onPrefChange);
-    } else if (mm && (mm as any).addListener) {
-      // older Safari fallback
-      (mm as any).addListener(onPrefChange);
-      return () => (mm as any).removeListener(onPrefChange);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function setTheme(dark: boolean) {
-    const body = document?.body;
-    if (!body) return;
-    if (dark) {
-      body.classList.add('dark');
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    
+    if (newIsDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
-      body.classList.remove('dark');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-    setIsDark(dark);
-  }
-
-  function toggleTheme() {
-    const newDark = !(isDark === true);
-    setTheme(newDark);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, newDark ? 'dark' : 'light');
-    } catch (e) {
-      // ignore storage errors
-    }
-  }
-
-  // While initializing, don't render (avoids mismatch). Render once isDark is set.
-  if (isDark === null) return null;
+  };
 
   return (
     <button
-      type="button"
-      aria-pressed={isDark}
-      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       onClick={toggleTheme}
-      className="theme-toggle"
+      className="p-2 rounded-md bg-accent/10 hover:bg-accent/20 transition-colors duration-200"
+      aria-label="Toggle theme"
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      {/* Simple visual: moon / sun using text + accessible label. You can replace with icons if you want. */}
-      <span className="theme-toggle-icon" aria-hidden="true">
-        {isDark ? '☀️' : '🌙'}
-      </span>
-
+      {isDark ? (
+        // Sun icon for light mode
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fillRule="evenodd" clipRule="evenodd" />
+        </svg>
+      ) : (
+        // Moon icon for dark mode
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+      )}
     </button>
   );
 }

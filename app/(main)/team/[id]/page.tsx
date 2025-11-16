@@ -1,5 +1,5 @@
 import React from 'react';
-import team from '../../../data/team.json';
+import team from '../../../../data/team.json';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 

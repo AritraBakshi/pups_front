@@ -1,5 +1,5 @@
 import React from 'react';
-import colloquia from '../../../data/colloquium.json';
+import colloquia from '../../../../data/colloquium.json';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 

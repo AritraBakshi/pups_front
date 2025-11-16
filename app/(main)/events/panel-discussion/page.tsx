@@ -1,5 +1,5 @@
 import React from 'react';
-import events from '../../../data/events.json';
+import events from '../../../../data/events.json';
 import Link from 'next/link';
 
 export default function PanelDiscussionPage(){
