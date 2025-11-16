@@ -16,11 +16,15 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   html, body {
     @apply m-0 p-0 transition-colors duration-300;
     min-height: 100vh;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   /* Light mode - black text on white background */

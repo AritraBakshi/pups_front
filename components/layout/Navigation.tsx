@@ -36,7 +36,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex gap-4 items-center" aria-label="Main navigation">
+      <nav className="hidden md:flex gap-2 lg:gap-4 items-center flex-shrink-0" aria-label="Main navigation">
         {navLinks.map(link => {
           const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
           
@@ -44,7 +44,7 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
-              className={`no-underline text-inherit transition-opacity duration-200 hover:opacity-100 ${
+              className={`no-underline text-inherit transition-opacity duration-200 hover:opacity-100 whitespace-nowrap text-sm lg:text-base ${
                 isActive ? 'font-semibold opacity-100' : 'font-normal opacity-90'
               }`}
             >
@@ -56,7 +56,7 @@ export default function Navigation() {
 
       {/* Mobile Hamburger Button */}
       <button
-        className="md:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50"
+        className="md:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50 flex-shrink-0"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
         aria-expanded={isOpen}
@@ -88,7 +88,7 @@ export default function Navigation() {
 
       {/* Mobile Navigation Menu */}
       <nav
-        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-white dark:bg-[#1a1a2e] shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-0 right-0 h-full w-64 max-w-[80vw] bg-white dark:bg-[#1a1a2e] shadow-2xl z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         aria-label="Mobile navigation"

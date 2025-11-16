@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 export default function PhysicsBackground() {
   const [isDark, setIsDark] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'));
@@ -17,23 +18,39 @@ export default function PhysicsBackground() {
       attributeFilter: ['class']
     });
 
-    return () => observer.disconnect();
+    // Check screen size for mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   // Famous physics equations - styled like WhatsApp Web background
-  const equations = [
+  const allEquations = [
     'E = mc²',
+    'F = ma',
+    'pV = nRT',
+    'λ = h/p',
+    'P = IV',
+    'v = fλ',
+    'ΔS ≥ 0',
+    'S = k ln W',
+    'L = T - V',
+    'Q = mcΔT',
+    'U = ½kx²',
+    'ω = √(k/m)',
     '∇·E = ρ/ε₀',
     '∇×B = μ₀J + μ₀ε₀∂E/∂t',
     'ℏω = E₂ - E₁',
-    'F = ma',
-    'S = k ln W',
     'Ψ = Ae^i(kx-ωt)',
     '∇²φ = 4πGρ',
-    'pV = nRT',
-    'ΔS ≥ 0',
-    'λ = h/p',
-    'L = T - V',
     'iℏ∂Ψ/∂t = ĤΨ',
     'G = H - TS',
     '∮E·dl = -dΦ/dt',
@@ -43,16 +60,20 @@ export default function PhysicsBackground() {
     'ΔxΔp ≥ ℏ/2',
     'c² = 1/μ₀ε₀',
     '∇×E = -∂B/∂t',
-    'P = IV',
     'τ = r×F',
-    'v = fλ',
-    'Q = mcΔT',
-    'U = ½kx²',
-    'ω = √(k/m)',
     'n₁sinθ₁ = n₂sinθ₂',
     'v² = u² + 2as',
     'I = I₀e^(-μx)',
   ];
+
+  // Use fewer equations on mobile (8-10) vs desktop (all 30)
+  const equations = useMemo(() => {
+    if (isMobile) {
+      // On mobile, use only the first 8-10 shorter equations
+      return allEquations.slice(0, 8);
+    }
+    return allEquations;
+  }, [isMobile]);
 
   const opacity = isDark ? 0.4 : 0.3;
   const color = isDark ? '#ffffff' : '#000000';
@@ -80,8 +101,8 @@ export default function PhysicsBackground() {
       w2: number,
       h2: number
     ) => {
-      // Add padding for spacing
-      const padding = 3;
+      // Add more padding for mobile to ensure better spacing
+      const padding = isMobile ? 5 : 3;
       return !(
         x1 + w1 + padding < x2 ||
         x2 + w2 + padding < x1 ||
@@ -96,10 +117,14 @@ export default function PhysicsBackground() {
       const maxAttempts = 100;
 
       do {
-        const x = Math.random() * 90 + 2;
-        const y = Math.random() * 90 + 2;
+        // Keep equations within viewport bounds (5% to 85% to prevent overflow)
+        const x = Math.random() * 80 + 5;
+        const y = Math.random() * 80 + 5;
         const rotation = Math.random() * 30 - 15;
-        const size = 0.75 + Math.random() * 0.45;
+        // Smaller font size on mobile
+        const size = isMobile 
+          ? 0.6 + Math.random() * 0.3  // 0.6-0.9rem on mobile
+          : 0.75 + Math.random() * 0.45; // 0.75-1.2rem on desktop
         const duration = 8 + Math.random() * 12; // 8-20 seconds (faster)
         const delay = Math.random() * 5; // 0-5 seconds delay
         
@@ -129,20 +154,23 @@ export default function PhysicsBackground() {
     }
 
     return positions;
-  }, []); // Empty dependency array means this only runs once
+  }, [equations, isMobile]);
 
-  // Generate floating grid boxes
+  // Generate floating grid boxes - fewer on mobile
   const gridBoxes = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => ({
+    const count = isMobile ? 5 : 12; // 5 boxes on mobile, 12 on desktop
+    return Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 90,
       y: Math.random() * 90,
-      size: 60 + Math.random() * 100, // 60-160px
+      size: isMobile 
+        ? 40 + Math.random() * 60  // 40-100px on mobile
+        : 60 + Math.random() * 100, // 60-160px on desktop
       rotation: Math.random() * 360,
       duration: 20 + Math.random() * 30, // 20-50 seconds
       delay: Math.random() * 10,
     }));
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
