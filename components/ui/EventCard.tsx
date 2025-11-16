@@ -1,5 +1,7 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Event } from '../../types';
 
 interface EventCardProps {
@@ -15,9 +17,10 @@ export default function EventCard({ event, variant = 'default' }: EventCardProps
   return (
     <Link href={`/events/${event.id}`} className={cardClasses}>
       <img
-        src={event.poster || '/placeholders/default.jpg'}
+        src={event.poster || "/placeholders/default.jpg"}
         alt={event.name}
-        className="w-full h-[140px] object-cover rounded-md"
+        onError={(e) => (e.currentTarget.src = "/placeholders/default.jpg")}
+        className="w-full h-[200px] object-cover rounded-md"
       />
       <h3 className="mt-2 font-semibold text-lg">{event.name}</h3>
       <div className="text-sm opacity-70 mt-1">

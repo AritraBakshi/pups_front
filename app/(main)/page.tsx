@@ -1,6 +1,8 @@
+"use client";
 import React from 'react';
 import events from '../../data/events.json';
 import Link from 'next/link';
+import Image from 'next/image';
 import { EventCard, HeroSection, WhatWeDoSection, Section } from '../../components/ui';
 
 export default function Home() {
@@ -31,7 +33,8 @@ export default function Home() {
             <img
               src={featured.poster || '/placeholders/default.jpg'}
               alt={featured.name}
-              className="w-full h-[300px] object-cover rounded-t-md"
+              onError={(e) => (e.currentTarget.src = "/placeholders/default.jpg")}
+              className="w-full h-full object-cover rounded-t-md"
             />
             <div className="p-6">
               <h3 className="text-3xl font-semibold mb-3">{featured.name}</h3>

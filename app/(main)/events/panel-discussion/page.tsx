@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import events from '../../../../data/events.json';
 import Link from 'next/link';
@@ -23,6 +24,7 @@ export default function PanelDiscussionPage(){
             <img
               src={ev.poster || '/placeholders/default.jpg'}
               alt={ev.name}
+              onError={(e) => (e.currentTarget.src = "/placeholders/default.jpg")}
               style={{width:'100%', height:140, objectFit:'cover', borderRadius:6}}
             />
             <h3 style={{marginTop:8}}>{ev.name}</h3>
