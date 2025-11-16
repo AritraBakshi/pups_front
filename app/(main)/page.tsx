@@ -25,7 +25,7 @@ export default function Home() {
           
           <Link 
             href={`/events/${featured.id}`} 
-            className="no-underline text-inherit block max-w-3xl mx-auto overflow-hidden bg-card rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            className="no-underline text-inherit block max-w-3xl mx-auto overflow-hidden bg-card border border-gray-400 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <img
               src={featured.poster || '/placeholders/default.jpg'}
