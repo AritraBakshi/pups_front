@@ -8,6 +8,7 @@ export default function Home() {
   const featured = events.find(e => e.featured && !e.past);
 
   return (
+    //dummy comment for github
     <div>
       {/* Full-screen Hero Section */}
       <HeroSection />
