@@ -1,5 +1,5 @@
 import React from 'react';
-import events from '../../../data/events.json';
+import events from '../../../../data/events.json';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
