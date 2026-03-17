@@ -1,42 +1,32 @@
 [
   {
     "id": 101,
-    "name": "Deep Learning Colloquium — Advances in Vision",
-    "speaker": "Dr. Ananya Sen",
-    "abstract": "Overview of recent advances in computer vision and deep learning, including transformer-based architectures and their applications in medical imaging and autonomous systems.",
-    "video": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "materials": ["https://drive.google.com/sample-presentation"],
-    "date": "2025-10-05 16:00",
-    "location": "Lecture Hall B"
+    "name": "Unlocking the Potential of Activated Carbon from Waste Biomass: Nature’s Solution for Industrial Energy Challenges",
+    "speaker": "Dwaipayan Mukherjee, Department of Physics (Third Year Undergraduate), Presidency University",
+    "abstract": "With the rapid increase in population, the globe is experiencing a significant surge in carbon emissions, production of bio-waste, and the need for sustainable and clean energy. Supercapacitors based on activated carbon present a promising answer to these issues. Derived from treated bio-waste, activated carbon offers a large surface area and remarkable electrochemical performance, enabling supercapacitors to achieve high power density and rapid charge–discharge performance.",
+    "video": "https://youtu.be/w1iAuKD-9Ks?si=JpzDCHLc803gMKDP",
+    "materials": [],
+    "date": "2025-11-12 15:30",
+    "location": "Amal Kumar Raychaudhuri Lecture Hall (PLT-2), Department of Physics, PU"
   },
   {
     "id": 102,
-    "name": "Quantum Entanglement and Information Theory",
-    "speaker": "Prof. Rajesh Mukherjee",
-    "abstract": "A deep dive into the role of entanglement in quantum communication and its implications for quantum computing.",
-    "video": "",
+    "name": "Neutron Scattering through a Spin Lattice: A Macroscopic Analog",
+    "speaker": "Nanda Gopal Raha, Department of Physics (Third Year Undergraduate), Presidency University",
+    "abstract": "We have modeled neutron scattering through a spin–lattice analogy using a classical setup where a magnet moves across a carrom board under the influence of four fixed ring magnets. The resulting magnetic potential field mimics spin–lattice interactions, and numerical simulations combined with experimental trials reproduce scattering-like trajectories. This approach highlights how lattice symmetry and spin–dependent effects can be visualized in a macroscopic analog, offering an accessible framework to explore neutron spin–lattice dynamics and their role in scattering phenomena.",
+    "video": "https://youtu.be/d8YwI7jRlwo?si=hBLlL45mewQw54wn",
     "materials": [],
-    "date": "2025-10-12 16:00",
-    "location": "Lecture Hall A"
+    "date": "2025-11-26 15:45",
+    "location": "Amal Kumar Raychaudhuri Lecture Hall (PLT-2), Department of Physics, PU"
   },
   {
     "id": 103,
-    "name": "Astrophysics Frontiers — Dark Matter Mapping",
-    "speaker": "Dr. Leena Das",
-    "abstract": "Exploring the latest techniques in gravitational lensing and cosmic microwave background analysis to understand dark matter distribution.",
-    "video": "https://www.youtube.com/embed/sample-darkmatter",
-    "materials": ["https://drive.google.com/darkmatter-slides"],
-    "date": "2025-10-19 16:00",
-    "location": "Auditorium"
-  },
-  {
-    "id": 104,
-    "name": "Panel Discussion — Physics Education in India",
-    "speaker": "Multiple Panelists",
-    "abstract": "A roundtable discussion on curriculum reform, research opportunities, and student engagement in physics education across Indian universities.",
-    "video": "",
-    "materials": ["https://drive.google.com/education-panel-summary"],
-    "date": "2025-10-26 16:00",
-    "location": "Seminar Room 2"
+    "name": "Gravitational Wave signal detection using Particle Swarm Optimization",
+    "speaker": "Aritra Bakshi, Department of Physics (Third Year Undergraduate), Presidency University",
+    "abstract": "Gravitational-wave parameter estimation relies on maximizing waveform matches over a high-dimensional parameter space, which becomes computationally expensive with traditional grid-based searches. In this talk, I demonstrate the use of Particle Swarm Optimization (PSO) as an efficient alternative for recovering compact binary parameters from gravitational-wave data. Using matched filtering as the objective function, PSO is applied to recover component masses and spins from simulated signals and real LIGO detector strain within the PyCBC framework. Injection-and-recovery studies show that PSO achieves accurate parameter recovery with significantly reduced computational cost compared to grid searches, particularly in higher dimensions. The results highlight PSO’s effectiveness for scalable and low-latency gravitational-wave data analysis.",
+    "video": "https://youtu.be/74vvTQQx8wY?si=7K5yHk6Qg5oZecIm",
+    "materials": [],
+    "date": "2026-03-11 15:45",
+    "location": "Amal Kumar Raychaudhuri Lecture Hall (PLT-2), Department of Physics, PU"
   }
 ]
