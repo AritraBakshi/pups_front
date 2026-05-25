@@ -3,27 +3,27 @@ import React from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import PhysicsBackground from '../components/ui/PhysicsBackground';
+import { AuthProvider } from '../context/AuthContext';
 
 export const metadata = {
   title: 'Presidency University Physics Society',
   description: 'Welcome to the Official Website of PUPS! Follow us to know about upcoming events and colloquium'
 };
-//Random Comment 1
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <PhysicsBackground />
-        
-        <div className="relative z-10 min-h-screen flex flex-col">
-          <Header />
-
-          <main className="pt-5 flex-1">
-            <div className="max-w-[1100px] mx-auto px-6">{children}</div>
-          </main>
-
-          <Footer />
-        </div>
+        <AuthProvider>
+          <PhysicsBackground />
+          <div className="relative z-10 min-h-screen flex flex-col">
+            <Header />
+            <main className="pt-5 flex-1">
+              <div className="max-w-[1100px] mx-auto px-6">{children}</div>
+            </main>
+            <Footer />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
