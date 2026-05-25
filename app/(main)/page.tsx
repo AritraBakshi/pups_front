@@ -1,24 +1,36 @@
 "use client";
-import React from 'react';
-import events from '../../data/events.json';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { getEvents } from '@/lib/api';
 import { EventCard, HeroSection, WhatWeDoSection, Section } from '../../components/ui';
 
 export default function Home() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents();
+        setEvents(data.data);
+      } catch (error) {
+        console.error('Failed to fetch events:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   const upcoming = events.filter(e => !e.past).slice(0, 3);
   const featured = events.find(e => e.featured && !e.past);
 
   return (
-    //dummy comment for github
     <div>
-      {/* Full-screen Hero Section */}
       <HeroSection />
-
-      {/* What We Do Section */}
       <WhatWeDoSection />
 
-      {/* Featured Event Section */}
       {featured && (
         <Section className="mb-20">
           <div className="text-center mb-10">
@@ -28,7 +40,7 @@ export default function Home() {
           
           <Link 
             href={`/events/${featured.id}`} 
-            className="no-underline text-inherit block max-w-3xl mx-auto overflow-hidden bg-card border border-gray-400 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            className="no-underline text-inherit block max-w-3xl mx-auto overflow-hidden bg-card border border-gray-400 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-300 hover:shadow-lg"
           >
             <img
               src={featured.poster || '/placeholders/default.jpg'}
@@ -51,7 +63,6 @@ export default function Home() {
         </Section>
       )}
 
-      {/* Upcoming Events Section */}
       {upcoming.length > 0 && (
         <Section className="mb-20">
           <div className="text-center mb-10">
@@ -76,7 +87,6 @@ export default function Home() {
         </Section>
       )}
 
-      {/* Call to Action Section */}
       <section className="p-10 md:p-15 bg-gradient-to-br from-primary to-[#1a1a2e] text-accent rounded-xl text-center mb-10">
         <h2 className="text-4xl font-bold mb-4">
           Join Our Community
