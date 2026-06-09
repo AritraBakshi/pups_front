@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Event } from '../../types';
+import { getImageUrl } from '../../lib/api';
 
 interface EventCardProps {
   event: Event;
@@ -16,7 +17,7 @@ export default function EventCard({ event, variant = 'default' }: EventCardProps
   return (
     <Link href={`/events/${event.id}`} className={cardClasses}>
       <img
-        src={event.poster || '/placeholders/default.jpg'}
+        src={getImageUrl(event.poster)}
         alt={event.name}
         onError={e => (e.currentTarget.src = '/placeholders/default.jpg')}
         className="w-full h-[200px] object-cover rounded-md"

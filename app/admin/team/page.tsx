@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getTeam, createTeamMember, updateTeamMember, deleteTeamMember } from '../../../lib/api';
+import { getTeam, createTeamMember, updateTeamMember, deleteTeamMember, getImageUrl } from '../../../lib/api';
 import { useAuth } from '../../../context/AuthContext';
 import { TeamMember } from '../../../types';
 
@@ -125,7 +125,7 @@ export default function AdminTeam() {
             <div key={m.id} className="bg-white dark:bg-[#25293c] border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-4 flex-wrap">
               <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex-shrink-0 overflow-hidden flex items-center justify-center">
                 {m.photo
-                  ? <img src={m.photo} alt={m.name} className="w-full h-full object-cover" />
+                  ? <img src={getImageUrl(m.photo)} alt={m.name} className="w-full h-full object-cover" />
                   : <span className="text-xl opacity-40">👤</span>}
               </div>
               <div className="flex-1 min-w-0">

@@ -28,6 +28,16 @@ const headers = () => {
   };
 };
 
+export const getImageUrl = (path?: string): string => {
+  if (!path) return '/placeholders/default.jpg';
+  if (path.startsWith('/uploads/')) {
+    const base = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api')
+      .replace('/api', '');
+    return `${base}${path}`;
+  }
+  return path;
+};
+
 // ==================== AUTH ====================
 
 export async function login(email: string, password: string) {

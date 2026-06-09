@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Colloquium } from '../../types';
+import { getImageUrl } from '../../lib/api';
 
 interface ColloquiumCardProps {
   colloquium: Colloquium;

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getEvents } from '@/lib/api';
+import { getEvents, getImageUrl } from '@/lib/api';
 import { EventCard, HeroSection, WhatWeDoSection, Section } from '../../components/ui';
 
 export default function Home() {
@@ -43,7 +43,7 @@ export default function Home() {
             className="no-underline text-inherit block max-w-3xl mx-auto overflow-hidden bg-card border border-gray-400 dark:border-gray-700 rounded-lg shadow-sm transition-all duration-300 hover:shadow-lg"
           >
             <img
-              src={featured.poster || '/placeholders/default.jpg'}
+              src={getImageUrl(featured.poster)}
               alt={featured.name}
               onError={(e) => (e.currentTarget.src = "/placeholders/default.jpg")}
               className="w-full h-full object-cover rounded-t-md"

@@ -1,14 +1,21 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getEvents, createEvent, updateEvent, deleteEvent } from '../../../lib/api';
+import { getEvents, createEvent, updateEvent, deleteEvent, getImageUrl } from '../../../lib/api';
 import { useAuth } from '../../../context/AuthContext';
 import { Event } from '../../../types';
 
-const EMPTY: Partial<Event> & { speakersRaw?: string; tagsRaw?: string } = {
+const EMPTY: any = {
   name: '', type: 'general', description: '', date: '', time: '', location: '',
   organizer: 'Department of Physics', tagline: '', audience: '', duration: '',
-  rsvpLink: '', speakersRaw: '', tagsRaw: '',
+  rsvpLink: '', speakersRaw: '', tagsRaw: '', video: '',
+  resources: [], photos: [],
   featured: false, past: false, published: true,
+};
+
+const parseArr = (v: any) => {
+  if (Array.isArray(v)) return v;
+  if (typeof v === 'string') { try { return JSON.parse(v); } catch {} }
+  return [];
 };
 
 export default function AdminEvents() {
@@ -16,7 +23,7 @@ export default function AdminEvents() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({ ...EMPTY });
+  const [form, setForm] = useState<any>({ ...EMPTY });
   const [editId, setEditId] = useState<string | null>(null);
   const [posterFile, setPosterFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -30,20 +37,36 @@ export default function AdminEvents() {
     try {
       setLoading(true);
       const data = await getEvents();
-      setEvents(data.data || []);
+      const normalized = (data.data || []).map((ev: Event) => ({
+        ...ev,
+        tags:      parseArr(ev.tags),
+        speakers:  parseArr(ev.speakers),
+        resources: parseArr(ev.resources),
+        photos:    parseArr(ev.photos),
+      }));
+      setEvents(normalized);
     } catch { setError('Failed to load events'); }
     finally { setLoading(false); }
   };
 
   useEffect(() => { load(); }, []);
 
-  const resetForm = () => { setForm({ ...EMPTY }); setEditId(null); setPosterFile(null); setShowForm(false); setError(''); };
+  const resetForm = () => {
+    setForm({ ...EMPTY });
+    setEditId(null);
+    setPosterFile(null);
+    setShowForm(false);
+    setError('');
+  };
 
   const startEdit = (ev: Event) => {
     setForm({
       ...ev,
-      speakersRaw: (ev.speakers || []).join(', '),
-      tagsRaw: (ev.tags || []).join(', '),
+      speakersRaw: parseArr(ev.speakers).join(', '),
+      tagsRaw:     parseArr(ev.tags).join(', '),
+      video:       (ev as any).video || '',
+      resources:   parseArr(ev.resources),
+      photos:      parseArr(ev.photos),
     });
     setEditId(ev.id);
     setShowForm(true);
@@ -56,13 +79,10 @@ export default function AdminEvents() {
     setError('');
     try {
       const fd = new FormData();
-      const fields: (keyof typeof form)[] = [
-        'name','type','description','date','time','location','organizer',
-        'tagline','audience','duration','rsvpLink'
-      ];
-      fields.forEach(k => fd.append(k as string, String(form[k] || '')));
-      fd.append('featured', String(form.featured));
-      fd.append('past', String(form.past));
+      const fields = ['name','type','description','date','time','location','organizer','tagline','audience','duration','rsvpLink','video'];
+      fields.forEach(k => fd.append(k, String(form[k] || '')));
+      fd.append('featured',  String(form.featured));
+      fd.append('past',      String(form.past));
       fd.append('published', String(form.published));
       fd.append('speakers', JSON.stringify(
         (form.speakersRaw || '').split(',').map((s: string) => s.trim()).filter(Boolean)
@@ -70,6 +90,8 @@ export default function AdminEvents() {
       fd.append('tags', JSON.stringify(
         (form.tagsRaw || '').split(',').map((s: string) => s.trim()).filter(Boolean)
       ));
+      fd.append('resources', JSON.stringify(form.resources || []));
+      fd.append('photos',    JSON.stringify(form.photos    || []));
       if (posterFile) fd.append('poster', posterFile);
 
       if (editId) {
@@ -91,13 +113,11 @@ export default function AdminEvents() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this event?')) return;
-    try {
-      await deleteEvent(id);
-      load();
-    } catch { setError('Delete failed'); }
+    try { await deleteEvent(id); load(); }
+    catch { setError('Delete failed'); }
   };
 
-  const set = (k: string, v: any) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
   return (
     <div>
@@ -124,10 +144,10 @@ export default function AdminEvents() {
         </div>
       )}
 
-      {/* Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white dark:bg-[#25293c] border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-6">
           <h3 className="font-semibold mb-4">{editId ? 'Edit Event' : 'New Event'}</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Event Name *">
               <input required value={form.name || ''} onChange={e => set('name', e.target.value)} className={iCls} placeholder="e.g. Quantum Mechanics Workshop" />
@@ -164,30 +184,122 @@ export default function AdminEvents() {
               <input type="url" value={form.rsvpLink || ''} onChange={e => set('rsvpLink', e.target.value)} className={iCls} placeholder="https://..." />
             </Field>
             <Field label="Speakers (comma-separated)">
-              <input value={(form as any).speakersRaw || ''} onChange={e => set('speakersRaw', e.target.value)} className={iCls} placeholder="Dr. A, Prof. B" />
+              <input value={form.speakersRaw || ''} onChange={e => set('speakersRaw', e.target.value)} className={iCls} placeholder="Dr. A, Prof. B" />
             </Field>
             <Field label="Tags (comma-separated)">
-              <input value={(form as any).tagsRaw || ''} onChange={e => set('tagsRaw', e.target.value)} className={iCls} placeholder="physics, quantum, workshop" />
+              <input value={form.tagsRaw || ''} onChange={e => set('tagsRaw', e.target.value)} className={iCls} placeholder="physics, quantum, workshop" />
             </Field>
             <Field label="Poster Image">
               <input type="file" accept="image/*" onChange={e => setPosterFile(e.target.files?.[0] || null)} className={iCls} />
+            </Field>
+            <Field label="Video URL (YouTube embed)">
+              <input type="url" value={form.video || ''} onChange={e => set('video', e.target.value)} className={iCls} placeholder="https://www.youtube.com/embed/..." />
             </Field>
             <Field label="Description *" className="md:col-span-2">
               <textarea required rows={4} value={form.description || ''} onChange={e => set('description', e.target.value)} className={iCls} placeholder="Describe the event..." />
             </Field>
           </div>
-          <div className="flex gap-6 mt-4 flex-wrap">
+
+          {/* Resources */}
+          <div className="mt-5">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-medium opacity-70">Resources</label>
+              <button
+                type="button"
+                onClick={() => set('resources', [...(form.resources || []), { title: '', url: '' }])}
+                className="text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                + Add Resource
+              </button>
+            </div>
+            {(form.resources || []).length === 0 && (
+              <p className="text-xs opacity-40 italic">No resources added.</p>
+            )}
+            {(form.resources || []).map((r: any, i: number) => (
+              <div key={i} className="flex gap-2 mb-2">
+                <input
+                  value={r.title || ''}
+                  onChange={e => {
+                    const updated = [...form.resources];
+                    updated[i] = { ...updated[i], title: e.target.value };
+                    set('resources', updated);
+                  }}
+                  placeholder="Title (e.g. Slides)"
+                  className={iCls}
+                />
+                <input
+                  value={r.url || ''}
+                  onChange={e => {
+                    const updated = [...form.resources];
+                    updated[i] = { ...updated[i], url: e.target.value };
+                    set('resources', updated);
+                  }}
+                  placeholder="URL"
+                  className={iCls}
+                />
+                <button
+                  type="button"
+                  onClick={() => set('resources', form.resources.filter((_: any, j: number) => j !== i))}
+                  className="px-2 text-red-500 hover:text-red-700 text-xl leading-none flex-shrink-0"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Photos */}
+          <div className="mt-5">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-medium opacity-70">Photo URLs</label>
+              <button
+                type="button"
+                onClick={() => set('photos', [...(form.photos || []), { url: '' }])}
+                className="text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                + Add Photo
+              </button>
+            </div>
+            {(form.photos || []).length === 0 && (
+              <p className="text-xs opacity-40 italic">No photos added.</p>
+            )}
+            {(form.photos || []).map((p: any, i: number) => (
+              <div key={i} className="flex gap-2 mb-2">
+                <input
+                  value={typeof p === 'string' ? p : (p.url || '')}
+                  onChange={e => {
+                    const updated = [...form.photos];
+                    updated[i] = { url: e.target.value };
+                    set('photos', updated);
+                  }}
+                  placeholder="https://..."
+                  className={iCls}
+                />
+                <button
+                  type="button"
+                  onClick={() => set('photos', form.photos.filter((_: any, j: number) => j !== i))}
+                  className="px-2 text-red-500 hover:text-red-700 text-xl leading-none flex-shrink-0"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Checkboxes */}
+          <div className="flex gap-6 mt-5 flex-wrap">
             {[
               { key: 'featured', label: 'Featured' },
-              { key: 'past', label: 'Past event' },
-              { key: 'published', label: 'Published' },
+              { key: 'past',     label: 'Past event' },
+              { key: 'published',label: 'Published' },
             ].map(({ key, label }) => (
               <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
-                <input type="checkbox" checked={!!(form as any)[key]} onChange={e => set(key, e.target.checked)} className="w-4 h-4" />
+                <input type="checkbox" checked={!!form[key]} onChange={e => set(key, e.target.checked)} className="w-4 h-4" />
                 {label}
               </label>
             ))}
           </div>
+
           <div className="flex gap-3 mt-5">
             <button type="submit" disabled={submitting} className="px-6 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-semibold text-sm disabled:opacity-50 hover:opacity-80 transition-opacity">
               {submitting ? 'Saving…' : editId ? 'Update Event' : 'Create Event'}
@@ -199,7 +311,6 @@ export default function AdminEvents() {
         </form>
       )}
 
-      {/* Event list */}
       {loading ? (
         <div className="text-center py-10 opacity-60">Loading events…</div>
       ) : events.length === 0 ? (
@@ -211,14 +322,19 @@ export default function AdminEvents() {
           {events.map(ev => (
             <div key={ev.id} className="bg-white dark:bg-[#25293c] border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-4 flex-wrap">
               <img
-                src={ev.poster || '/placeholders/default.jpg'}
+                src={getImageUrl(ev.poster)}
                 onError={e => (e.currentTarget.src = '/placeholders/default.jpg')}
                 alt={ev.name}
                 className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
               />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold truncate">{ev.name}</div>
-                <div className="text-xs opacity-60 mt-0.5">{ev.date} · {ev.type} {ev.past && '· Past'} {ev.featured && '· ⭐ Featured'} {!ev.published && '· Draft'}</div>
+                <div className="text-xs opacity-60 mt-0.5">
+                  {ev.date} · {ev.type}
+                  {ev.past      && ' · Past'}
+                  {ev.featured  && ' · ⭐ Featured'}
+                  {!ev.published && ' · Draft'}
+                </div>
               </div>
               <div className="flex gap-2 flex-shrink-0">
                 <button onClick={() => startEdit(ev)} className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">

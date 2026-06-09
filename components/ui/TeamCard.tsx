@@ -1,6 +1,7 @@
 import React from 'react';
 import { TeamMember } from '../../types';
 import { Linkedin, Mail, User } from 'lucide-react';
+import { getImageUrl } from '../../lib/api';
 
 interface TeamCardProps {
   member: TeamMember;
@@ -12,7 +13,7 @@ export default function TeamCard({ member }: TeamCardProps) {
       <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mb-4 flex-shrink-0 overflow-hidden">
         {member.photo ? (
           <img
-            src={member.photo}
+            src={getImageUrl(member.photo)}
             alt={member.name}
             className="w-full h-full object-cover"
             onError={e => { e.currentTarget.style.display = 'none'; }}
